@@ -1,0 +1,1 @@
+docker run -it -d -v /mnt/sda2/tk:/data/tk -e dav="/data,/data,nul,nul,false"-p 8081:80 -name="gowebdav"-restart=unless-stopped 117503445/go webdav

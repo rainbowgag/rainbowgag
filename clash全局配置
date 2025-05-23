@@ -1,0 +1,61 @@
+# ====== Clash 全局代理模板（所有流量都走代理）======
+
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+
+allow-lan: true
+mode: Global          # 全局代理
+
+log-level: info
+
+external-controller: 127.0.0.1:9090
+secret: ""
+
+proxies:   # 在这里填写你的 Clash 节点
+  #- { name: 节点名称, type: socks5, server: 服务器IP, port: 1123, username: 用户名, password: passwordd, udp: true }
+
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies:   # 这里写你的节点名字
+     # - 节点名称
+      - DIRECT
+
+  - name: "链式"
+    type: select
+    proxies:   # 这里写你的节点名字
+     # - 节点名称
+     - DIRECT
+
+rules:
+  - MATCH,Proxy      # 所有流量都走代理
+
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  default-nameserver:
+    - 114.114.114.114
+    - 8.8.8.8
+    - 1.1.1.1
+  nameserver:
+    - tls://8.8.8.8:853
+    - tls://1.1.1.1:853
+    - tls://dns.google:853
+    - tls://dns.cloudflare.com:853
+  fallback:
+    - 8.8.4.4
+    - 1.0.0.1
+    - tls://1.0.0.1:853
+    - tls://8.8.4.4:853
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+health-check:
+  enable: true
+  interval: 300         # 每 5 分钟检测一次
+  lazy: true            # 懒加载（仅在需要时检测）
+  url: http://www.gstatic.com/generate_204
+  timeout: 5            # 超过 5 秒视为失效

@@ -40,22 +40,29 @@ dns:
     - 8.8.8.8
     - 1.1.1.1
   nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
     - tls://8.8.8.8:853
     - tls://1.1.1.1:853
-    - tls://dns.google:853
-    - tls://dns.cloudflare.com:853
   fallback:
+   - https://doh.dns.sb/dns-query
+   - https://dns.cloudflare.com/dns-query
+   - https://dns.twnic.tw/dns-query
+   - tls://1.0.0.1:853
+   - tls://8.8.4.4:853
+  proxy-server-nameserver:   
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - 8.8.8.8
     - 8.8.4.4
-    - 1.0.0.1
-    - tls://1.0.0.1:853
-    - tls://8.8.4.4:853
+    - 1.1.1.1
   fallback-filter:
     geoip: true
     ipcidr:
       - 240.0.0.0/4
 health-check:
   enable: true
-  interval: 300         # 每 5 分钟检测一次
-  lazy: true            # 懒加载（仅在需要时检测）
+  interval: 300         
+  lazy: true            
   url: http://www.gstatic.com/generate_204
-  timeout: 5            # 超过 5 秒视为失效
+  timeout: 5           
